@@ -60,7 +60,7 @@ const Navbar: FC = () => {
   useEffect(() => {
     if (filterableCollection) {
      // const href = getInitialSearchHref()
-      const href =`https://api.smartnftsearch.xyz/search/autocomplete?search_query=${'doodles'}`
+      const href =`https://api.smartnftsearch.xyz/search/autocomplete?search_query=${''}`
       
       fetch(href).then(async (res) => {
         let initialResults = undefined

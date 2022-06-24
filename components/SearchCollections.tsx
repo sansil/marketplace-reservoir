@@ -215,7 +215,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                 <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
-                {initialResults?.responses.collections
+                {initialResults?.responses?.collections?
                   .slice(0, 4)
                   .map((collection, index) => (
                     <Link
@@ -253,7 +253,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                    <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Tokens</h2>
-                {initialResults?.responses.token
+                {initialResults?.responses?.token?
                   .slice(0, 4)
                   .map((collection, index) => (
                     <Link
