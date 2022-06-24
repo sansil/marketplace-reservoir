@@ -59,14 +59,18 @@ const Navbar: FC = () => {
 
   useEffect(() => {
     if (filterableCollection) {
-      const href = getInitialSearchHref()
-
+     // const href = getInitialSearchHref()
+      const href =`https://api.smartnftsearch.xyz/search/autocomplete?search_query=${'doodles'}`
+      
       fetch(href).then(async (res) => {
         let initialResults = undefined
-
+        
+       
+        
         if (res.ok) {
           initialResults =
             (await res.json()) as paths['/search/collections/v1']['get']['responses']['200']['schema']
+            console.log('sansil',initialResults)
         }
 
         const smallCommunity =
@@ -99,10 +103,10 @@ const Navbar: FC = () => {
   }, [filterableCollection])
 
   return (
-    <nav className="relative col-span-full flex items-center justify-between gap-2 px-6 py-4 md:gap-3 md:py-6 md:px-16">
+    <nav className="relative flex items-center justify-between gap-2 px-6 py-4 col-span-full md:gap-3 md:py-6 md:px-16">
       <NavbarLogo className="z-10 max-w-[300px]" />
       {showLinks && (
-        <div className="z-10 ml-12 hidden items-center gap-11 lg:flex">
+        <div className="z-10 items-center hidden ml-12 gap-11 lg:flex">
           {externalLinks.map(({ name, url }) => (
             <a
               key={url}
@@ -116,13 +120,13 @@ const Navbar: FC = () => {
           ))}
         </div>
       )}
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex items-center justify-center w-full h-full">
         <div className="absolute left-0 z-[1] flex w-full justify-center">
           {filterComponent && filterComponent}
         </div>
       </div>
       <HamburgerMenu externalLinks={externalLinks} />
-      <div className="z-10 ml-auto hidden shrink-0 md:flex md:gap-2">
+      <div className="z-10 hidden ml-auto shrink-0 md:flex md:gap-2">
         <ConnectWallet />
         <ThemeSwitcher />
       </div>

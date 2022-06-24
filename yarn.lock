@@ -1612,10 +1612,10 @@
   dependencies:
     "@react-hookz/deep-equal" "^1.0.2"
 
-"@reservoir0x/client-sdk@^0.0.32":
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/@reservoir0x/client-sdk/-/client-sdk-0.0.32.tgz#d7f3477c03ebca838fc1f8c97988cf20a6136e1b"
-  integrity sha512-X/PLJADqXqk6JOHLSDZylxp+eFy4+K765kFWbbYLOPm6AnT/CtyPr5+EMti+okCfLVY/JaMSWM9LjGxhkxMr9g==
+"@reservoir0x/client-sdk@^0.0.35":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@reservoir0x/client-sdk/-/client-sdk-0.0.35.tgz#b4815e3078c389e139cef3dd2186322d0bd411a1"
+  integrity sha512-5lVGdkOUAUbsdOYVkcx6SIlzC3IrE0+JhLt5WAhCqn49ENoKA4mY0Z/dxy5Yh5dgwmDc9hI7UjkOFA4mtZ7W1g==
   dependencies:
     ethers "^5.6.1"
 
