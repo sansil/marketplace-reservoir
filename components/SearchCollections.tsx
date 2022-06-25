@@ -145,11 +145,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                          highlightedIndex === index
-                            ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                            : ''
-                        }`}
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                       >
                         <img
                           src={
@@ -194,11 +190,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                          highlightedIndex === index
-                            ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                            : ''
-                        }`}
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                       >
                         {/* <img
                           src={
@@ -232,11 +224,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                          highlightedIndex === index
-                            ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                            : ''
-                        }`}
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                       >
                         {/* <img
                           src={
@@ -270,11 +258,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                          highlightedIndex === index
-                            ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                            : ''
-                        }`}
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                       >
                         {/* <img
                           src={
@@ -289,7 +273,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                         </span>
                       </a>
                     </Link>
-                  ))}
+                  ))}:<></>
               </div>
             )}
           {(focused || isOpen) && inputValue !== '' && isEmpty && (
@@ -320,11 +304,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       reset()
                       setFocused(false)
                     }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                      highlightedIndex === index
-                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                        : ''
-                    }`}
+                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
                     <img
                       src={
@@ -362,11 +342,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       reset()
                       setFocused(false)
                     }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                      highlightedIndex === index
-                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                        : ''
-                    }`}
+                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
                     {/* <img
                       src={
@@ -397,11 +373,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       reset()
                       setFocused(false)
                     }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                      highlightedIndex === index
-                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                        : ''
-                    }`}
+                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
                     {/* <img
                       src={
@@ -432,11 +404,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       reset()
                       setFocused(false)
                     }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${
-                      highlightedIndex === index
-                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
-                        : ''
-                    }`}
+                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
                     {/* <img
                       src={
