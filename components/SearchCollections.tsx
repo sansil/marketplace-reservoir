@@ -172,7 +172,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 {...getMenuProps()}
               >
                 <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>
-                {initialResults?.responses["smart search"]
+                {initialResults?.responses.smart_search
                   .slice(0, 4)
                   .map((collection, index) => (
                     <Link
@@ -322,7 +322,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               {...getMenuProps()}
             >
               <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>
-              {results?.responses && results?.responses["smart search"]?.slice(0, 4).map((collection, index) => (
+              {results?.responses && results?.responses.smart_search?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
                   href={`/collections/${collection?.collectionId}`}
