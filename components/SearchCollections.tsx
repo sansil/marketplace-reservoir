@@ -28,9 +28,9 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     const pathname = `${PROXY_API_BASE}/search/collections/v1`
 
     const query: paths['/search/collections/v1']['get']['parameters']['query'] =
-      {
-        limit: 6,
-      }
+    {
+      limit: 6,
+    }
 
     if (communityId && communityId !== 'www' && communityId !== 'localhost') {
       query.community = communityId
@@ -57,13 +57,13 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
       setCount(countRef.current)
 
       //const href = getHref(value)
-      const href =`https://api.smartnftsearch.xyz/search/autocomplete?search_query=${value}`
+      const href = `https://api.smartnftsearch.xyz/search/autocomplete?search_query=${value}`
 
       try {
         const res = await fetch(href)
 
         const data = (await res.json()) as SearchCollectionsAPISuccessResponse
-        console.log('sansil',data)
+        console.log('sansil', data)
         if (!data) throw new ReferenceError('Data does not exist.')
 
         setResults(data)
@@ -98,9 +98,8 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
           className="relative"
         >
           <FiSearch
-            className={`absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#4b5563] dark:text-neutral-300 ${
-              focused ? 'text-[#9CA3AF]' : ''
-            }`}
+            className={`absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#4b5563] dark:text-neutral-300 ${focused ? 'text-[#9CA3AF]' : ''
+              }`}
           />
           <input
             type="text"
@@ -167,13 +166,13 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
           {(focused || isOpen) &&
             inputValue === '' &&
             initialResults?.responses &&
-             (
+            (
               <div
                 className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
                 {...getMenuProps()}
               >
-                   <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>
-                  {initialResults?.responses["smart search"]
+                <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>
+                {initialResults?.responses["smart search"]
                   .slice(0, 4)
                   .map((collection, index) => (
                     <Link
@@ -207,26 +206,24 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                 <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
-                {initialResults?.responses?.collections?
-                  .slice(0, 4)
-                  .map((collection, index) => (
-                    <Link
-                      key={collection}
-                      href={`/collections/${collection?.collectionId}`}
+                {initialResults?.responses?.collections?.slice(0, 4).map((collection, index) => (
+                  <Link
+                    key={collection}
+                    href={`/collections/${collection?.collectionId}`}
+                  >
+                    <a
+                      {...getItemProps({
+                        key: collection,
+                        index,
+                        item: collection,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                     >
-                      <a
-                        {...getItemProps({
-                          key: collection,
-                          index,
-                          item: collection,
-                        })}
-                        onClick={() => {
-                          reset()
-                          setFocused(false)
-                        }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
-                      >
-                        {/* <img
+                      {/* <img
                           src={
                             collection?.image ??
                             'https://via.placeholder.com/30'
@@ -234,33 +231,31 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           alt={`${collection}'s logo.`}
                           className="overflow-hidden rounded-full h-9 w-9"
                         /> */}
-                        <span className="ml-2 reservoir-subtitle dark:text-white">
-                          {collection}
-                        </span>
-                      </a>
-                    </Link>
-                  ))}
-                   <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Tokens</h2>
-                {initialResults?.responses?.token?
-                  .slice(0, 4)
-                  .map((collection, index) => (
-                    <Link
-                      key={collection}
-                      href={`/collections/${collection?.collectionId}`}
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {collection}
+                      </span>
+                    </a>
+                  </Link>
+                ))}
+                <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Tokens</h2>
+                {initialResults?.responses?.token?.slice(0, 4).map((collection, index) => (
+                  <Link
+                    key={collection}
+                    href={`/collections/${collection?.collectionId}`}
+                  >
+                    <a
+                      {...getItemProps({
+                        key: collection,
+                        index,
+                        item: collection,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                     >
-                      <a
-                        {...getItemProps({
-                          key: collection,
-                          index,
-                          item: collection,
-                        })}
-                        onClick={() => {
-                          reset()
-                          setFocused(false)
-                        }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
-                      >
-                        {/* <img
+                      {/* <img
                           src={
                             collection?.image ??
                             'https://via.placeholder.com/30'
@@ -268,12 +263,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           alt={`${collection}'s logo.`}
                           className="overflow-hidden rounded-full h-9 w-9"
                         /> */}
-                        <span className="ml-2 reservoir-subtitle dark:text-white">
-                          {collection}
-                        </span>
-                      </a>
-                    </Link>
-                  ))}:<></>
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {collection}
+                      </span>
+                    </a>
+                  </Link>
+                ))}:<></>
               </div>
             )}
           {(focused || isOpen) && inputValue !== '' && isEmpty && (
@@ -326,7 +321,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
               {...getMenuProps()}
             >
-            <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>
+              <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>
               {results?.responses && results?.responses["smart search"]?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
@@ -357,8 +352,8 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   </a>
                 </Link>
               ))}
-               <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
-              { results?.responses?.collections?.slice(0, 4).map((collection, index) => (
+              <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
+              {results?.responses?.collections?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
                   href={`/collections/${collection?.collectionId}`}
@@ -388,8 +383,8 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   </a>
                 </Link>
               ))}
-               <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Tokens</h2>
-              { results?.responses?.token?.slice(0, 3).map((collection, index) => (
+              <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Tokens</h2>
+              {results?.responses?.token?.slice(0, 3).map((collection, index) => (
                 <Link
                   key={index}
                   href={`/collections/${collection?.collectionId}`}
