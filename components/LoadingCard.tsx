@@ -11,9 +11,9 @@ const LoadingCard: FC<Props> = ({ viewRef }) => {
       ref={viewRef}
       className="mb-6 grid min-h-[250px] animate-pulse rounded-b-md border border-neutral-300 bg-white shadow-md dark:border-neutral-600 dark:bg-neutral-900"
     >
-      <div className="mt-auto p-3">
-        <div className="aspect-w-1 aspect-h-1 relative">
-          <div className="mb-3 h-full bg-neutral-200 dark:bg-neutral-800"></div>
+      <div className="p-3 mt-auto">
+        <div className="relative aspect-w-1 aspect-h-1">
+          <div className="h-full mb-3 bg-neutral-200 dark:bg-neutral-800"></div>
         </div>
         <div className="flex items-center justify-between pb-4">
           <div className="h-4 w-[100px] rounded-md bg-neutral-200 dark:bg-neutral-800"></div>

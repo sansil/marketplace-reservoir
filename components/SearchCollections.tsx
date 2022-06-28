@@ -204,11 +204,11 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       </a>
                     </Link>
                   ))}
-                <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
-                {initialResults?.responses?.collections?.slice(0, 4).map((collection, index) => (
+                <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Attributes</h2>
+                {initialResults?.responses?.attributes?.slice(0, 4).map((collection, index) => (
                   <Link
-                    key={collection}
-                    href={`/collections/${collection?.collectionId}`}
+                    key={index}
+                    href={`/collections/${collection?.collection_contract}`}
                   >
                     <a
                       {...getItemProps({
@@ -222,16 +222,50 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       }}
                       className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                     >
-                      {/* <img
-                          src={
-                            collection?.image ??
-                            'https://via.placeholder.com/30'
-                          }
-                          alt={`${collection}'s logo.`}
-                          className="overflow-hidden rounded-full h-9 w-9"
-                        /> */}
+                      <img
+                        src={
+                          collection?.collection_image ?? 'https://via.placeholder.com/30'
+                        }
+                        alt={`${collection?.collection_image}'s logo.`}
+                        className="overflow-hidden rounded-full h-9 w-9"
+                      />
                       <span className="ml-2 reservoir-subtitle dark:text-white">
-                        {collection}
+                        {collection.collection_name}
+                      </span>
+                      <span className="px-2 py-1 ml-2 text-xs rounded-md reservoir-subtitle dark:text-white bg-neutral-700">
+                        {collection.key} {collection.value}
+                      </span>
+                    </a>
+                  </Link>
+                ))}
+                <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
+                {initialResults?.responses?.collections?.slice(0, 4).map((collection, index) => (
+                  <Link
+                    key={collection}
+                    href={`/collections/${collection?.collection_contract}`}
+                  >
+                    <a
+                      {...getItemProps({
+                        key: collection,
+                        index,
+                        item: collection,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
+                    >
+                      <img
+                        src={
+                          collection?.collection_image ??
+                          'https://via.placeholder.com/30'
+                        }
+                        alt={`${collection}'s logo.`}
+                        className="overflow-hidden rounded-full h-9 w-9"
+                      />
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {collection.collection_name}
                       </span>
                     </a>
                   </Link>
@@ -255,13 +289,13 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                     >
                       {/* <img
-                          src={
-                            collection?.image ??
-                            'https://via.placeholder.com/30'
-                          }
-                          alt={`${collection}'s logo.`}
-                          className="overflow-hidden rounded-full h-9 w-9"
-                        /> */}
+                        src={
+                          collection?.collection_image ??
+                          'https://via.placeholder.com/30'
+                        }
+                        alt={`${collection}'s logo.`}
+                        className="overflow-hidden rounded-full h-9 w-9"
+                      /> */}
                       <span className="ml-2 reservoir-subtitle dark:text-white">
                         {collection}
                       </span>
@@ -351,11 +385,11 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   </a>
                 </Link>
               ))}
-              <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
-              {results?.responses?.collections?.slice(0, 4).map((collection, index) => (
+              <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Attributes</h2>
+              {results?.responses?.attributes?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
-                  href={`/collections/${collection?.collectionId}`}
+                  href={`/collections/${collection?.collection_contract}`}
                 >
                   <a
                     {...getItemProps({
@@ -369,15 +403,49 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     }}
                     className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
-                    {/* <img
+                    <img
                       src={
-                        collection?.image ?? 'https://via.placeholder.com/30'
+                        collection?.collection_image ?? 'https://via.placeholder.com/30'
                       }
-                      alt={`${collection?.name}'s logo.`}
+                      alt={`${collection?.collection_image}'s logo.`}
                       className="overflow-hidden rounded-full h-9 w-9"
-                    /> */}
+                    />
                     <span className="ml-2 reservoir-subtitle dark:text-white">
-                      {collection}
+                      {collection.collection_name}
+                    </span>
+                    <span className="px-2 py-1 ml-2 text-xs rounded-md reservoir-subtitle dark:text-white bg-neutral-700">
+                      {collection.key} {collection.value}
+                    </span>
+                  </a>
+                </Link>
+              ))}
+              <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>
+              {results?.responses?.collections?.slice(0, 4).map((collection, index) => (
+                <Link
+                  key={index}
+                  href={`/collections/${collection?.collection_contract}`}
+                >
+                  <a
+                    {...getItemProps({
+                      key: collection,
+                      index,
+                      item: collection,
+                    })}
+                    onClick={() => {
+                      reset()
+                      setFocused(false)
+                    }}
+                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
+                  >
+                    <img
+                      src={
+                        collection?.collection_image ?? 'https://via.placeholder.com/30'
+                      }
+                      alt={`${collection?.collection_image}'s logo.`}
+                      className="overflow-hidden rounded-full h-9 w-9"
+                    />
+                    <span className="ml-2 reservoir-subtitle dark:text-white">
+                      {collection.collection_name}
                     </span>
                   </a>
                 </Link>
