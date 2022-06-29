@@ -103,7 +103,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
       setCount(countRef.current)
 
       //const href = getHref(value)
-      const href = `https://api.smartnftsearch.xyz/search/autocomplete?search_query=${value}`
+      const href = `https://api.smartnftsearch.xyz/search/autocomplete?search_query=${value}&search_types=name_autocomplete,individual_attributes,token_search,individual_attributes,attribute_search`
 
       try {
         const res = await fetch(href)

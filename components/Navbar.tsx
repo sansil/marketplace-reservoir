@@ -59,18 +59,18 @@ const Navbar: FC = () => {
 
   useEffect(() => {
     if (filterableCollection) {
-     // const href = getInitialSearchHref()
-      const href =`https://api.smartnftsearch.xyz/search/autocomplete?search_query=${''}`
-      
+      // const href = getInitialSearchHref()
+      const href = `https://api.smartnftsearch.xyz/search/autocomplete?search_query=${''}&search_types=name_autocomplete,individual_attributes,token_search,individual_attributes,attribute_search`
+
       fetch(href).then(async (res) => {
         let initialResults = undefined
-        
-       
-        
+
+
+
         if (res.ok) {
           initialResults =
             (await res.json()) as paths['/search/collections/v1']['get']['responses']['200']['schema']
-            console.log('sansil',initialResults)
+          console.log('sansil', initialResults)
         }
 
         const smallCommunity =
