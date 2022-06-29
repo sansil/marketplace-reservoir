@@ -429,7 +429,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   </a>
                 </div>
               ))}
-              {results?.responses?.collections && <h2 className='flex items-center font-semibold py-1 px-5 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>}
+              {results?.responses?.collections?.length > 0 && <h2 className='flex items-center font-semibold py-1 px-5 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>}
               {results?.responses?.collections?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
