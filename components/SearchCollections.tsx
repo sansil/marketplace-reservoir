@@ -319,7 +319,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 {initialResults?.responses?.token?.slice(0, 4).map((collection, index) => (
                   <Link
                     key={collection}
-                    href={``}
+                    href={`#`}
                   >
                     <a
                       {...getItemProps({
@@ -501,7 +501,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               {results?.responses?.token?.slice(0, 3).map((collection, index) => (
                 <Link
                   key={index}
-                  href={``}
+                  href={`#`}
                 >
                   <a
                     {...getItemProps({
