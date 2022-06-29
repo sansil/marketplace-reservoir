@@ -206,9 +206,10 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   ))}
                 <h2 className='flex items-center p-1 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Attributes</h2>
                 {initialResults?.responses?.attributes?.slice(0, 4).map((collection, index) => (
+                  //http://localhost:3000/collections/0x7bd29408f11d2bfc23c34f18275bbf23bb716bc7?attributes%5BShirt%5D=Hoodie&attributes%5BPants+Color%5D=Denim
                   <Link
                     key={index}
-                    href={`/collections/${collection?.collection_contract}`}
+                    href={`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`}
                   >
                     <a
                       {...getItemProps({
@@ -389,7 +390,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               {results?.responses?.attributes?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
-                  href={`/collections/${collection?.collection_contract}`}
+                  href={`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`}
                 >
                   <a
                     {...getItemProps({
