@@ -73,6 +73,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
           }
 
         }
+
+        if (data.error === 0 && data.request_type === 'pfp_search') {
+          //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
+          router.push(`/collections/${data.request_response.contract_address}/${data.request_response.token_id}`)
+
+        }
       })
     })
   }
@@ -313,7 +319,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 {initialResults?.responses?.token?.slice(0, 4).map((collection, index) => (
                   <Link
                     key={collection}
-                    href={`/collections/${collection?.collectionId}`}
+                    href={``}
                   >
                     <a
                       {...getItemProps({
@@ -324,6 +330,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       onClick={() => {
                         reset()
                         setFocused(false)
+                        fetchWAT(collection)
                       }}
                       className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                     >
@@ -494,7 +501,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               {results?.responses?.token?.slice(0, 3).map((collection, index) => (
                 <Link
                   key={index}
-                  href={`/collections/${collection?.collectionId}`}
+                  href={``}
                 >
                   <a
                     {...getItemProps({
@@ -505,6 +512,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     onClick={() => {
                       reset()
                       setFocused(false)
+                      fetchWAT(collection)
                     }}
                     className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
