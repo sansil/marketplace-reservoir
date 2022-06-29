@@ -63,7 +63,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
             const search_attributes = data.request_response.attributes
             let url = ""
             search_attributes.forEach((attr, index) => {
-
+              if (url.includes(attr.key)) return
               if (index == 0)
                 url = `attributes%5B${attr.key}%5D=${attr.value}`
               else
