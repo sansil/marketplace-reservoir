@@ -41,6 +41,43 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     return setParams(pathname, query)
   }
 
+
+  const fetchWAT = (search_query) => {
+    let formData = new FormData()
+    formData.append('start', "0")
+    formData.append('limit', "20")
+    formData.append('buy_now', "true")
+    formData.append('search_query', search_query)
+
+    const data = new URLSearchParams();
+    for (const pair of formData) {
+      data.append(pair[0], pair[1]);
+    }
+
+    fetch('https://api.smartnftsearch.xyz/search/', { method: "post", body: data }).then((res) => {
+      res.json().then((data) => {
+        if (data.error === 0 && data.request_type === 'attribute_search') {
+          //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
+          if (data.request_response.search_attributes.length > 0) {
+            const search_attributes = data.request_response.search_attributes
+            let url = ""
+            search_attributes.forEach((attr, index) => {
+              const attrArr = attr.split(":")
+              if (index == 0)
+                url = `attributes%5B${attrArr[0]}%5D=${attrArr[1].slice(1)}` + url
+              else
+                url = `&attributes%5B${attrArr[0]}%5D=${attrArr[1].slice(1)}` + url
+            })
+            console.log(url)
+            router.push(`/collections/${data.request_response.contract_address}?${url}`)
+          }
+
+        }
+      })
+    })
+  }
+
+
   const [count, setCount] = useState(0)
   const countRef = useRef(count)
   countRef.current = count
@@ -175,8 +212,8 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 {initialResults?.responses.smart_search?.slice(0, 4)
                   .map((collection, index) => (
                     <Link
-                      key={collection}
-                      href={`/collections/${''}`}
+                      key={collection + index}
+                      href={`#`}
                     >
                       <a
                         {...getItemProps({
@@ -185,6 +222,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           item: collection,
                         })}
                         onClick={() => {
+                          fetchWAT(collection)
                           reset()
                           setFocused(false)
                         }}
@@ -213,7 +251,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   >
                     <a
                       {...getItemProps({
-                        key: collection,
+                        key: collection + index,
                         index,
                         item: collection,
                       })}
@@ -359,7 +397,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               {results?.responses && results?.responses.smart_search?.slice(0, 4).map((collection, index) => (
                 <Link
                   key={index}
-                  href={`/collections/${collection?.collectionId}`}
+                  href={`#`}
                 >
                   <a
                     {...getItemProps({
@@ -370,6 +408,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     onClick={() => {
                       reset()
                       setFocused(false)
+                      fetchWAT(collection)
                     }}
                     className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
                   >
