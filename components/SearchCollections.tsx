@@ -75,10 +75,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
 
         }
 
-        if (data.error === 0 && data.request_type === 'pfp_search') {
+        else if (data.error === 0 && data.request_type === 'pfp_search') {
           //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
           router.push(`/${data.request_response.contract_address}/${data.request_response.token_id}`)
 
+        } else {
+          alert("Sorry no supported yet")
         }
       })
     })
