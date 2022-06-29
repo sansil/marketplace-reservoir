@@ -47,6 +47,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     formData.append('start', "0")
     formData.append('limit', "20")
     formData.append('buy_now', "true")
+    formData.append('nlu_only', "true")
     formData.append('search_query', search_query)
 
     const data = new URLSearchParams();
@@ -58,15 +59,15 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
       res.json().then((data) => {
         if (data.error === 0 && data.request_type === 'attribute_search') {
           //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
-          if (data.request_response.search_attributes.length > 0) {
-            const search_attributes = data.request_response.search_attributes
+          if (data.request_response.attributes.length > 0) {
+            const search_attributes = data.request_response.attributes
             let url = ""
             search_attributes.forEach((attr, index) => {
-              const attrArr = attr.split(":")
+
               if (index == 0)
-                url = `attributes%5B${attrArr[0]}%5D=${attrArr[1].slice(1)}` + url
+                url = `attributes%5B${attr.key}%5D=${attr.value}`
               else
-                url = `&attributes%5B${attrArr[0]}%5D=${attrArr[1].slice(1)}` + url
+                url = url + `&attributes%5B${attr.key}%5D=${attr.value}`
             })
             console.log(url)
             router.push(`/collections/${data.request_response.contract_address}?${url}`)
