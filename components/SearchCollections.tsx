@@ -116,7 +116,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
       } catch (err) {
         console.error(err)
       }
-    }, 100),
+    }, 300),
     []
   )
 
