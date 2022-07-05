@@ -20,15 +20,15 @@ type WatApiResponse = {
       value: string
     }[],
     token?: string[],
-    attributes?: [
-      {
-        collection_name: string,
-        collection_contract: string,
-        collection_image: string,
-        key: string,
-        value: string
-      }
-    ]
+    attributes?:
+    {
+      collection_name: string,
+      collection_contract: string,
+      collection_image: string,
+      key: string,
+      value: string
+    }[]
+
   };
 }
 
@@ -202,6 +202,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
                 {...getMenuProps()}
               >
+                {initialResults?.responses?.smart_search && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Smart Search</h2>}
                 {initialResults?.responses?.smart_search && initialResults?.responses?.smart_search
                   .slice(0, acSettings.smartSearch)
                   .map((recomendation, index) => (
@@ -232,6 +233,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       </a>
                     </div>
                   ))}
+                {initialResults?.responses?.collections && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Collections</h2>}
                 {initialResults?.responses?.collections && initialResults?.responses?.collections
                   .slice(0, acSettings.collections)
                   .map((collection, index) => (
@@ -268,6 +270,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       </a>
                     </Link>
                   ))}
+                {initialResults?.responses?.token && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Tokens</h2>}
                 {initialResults?.responses?.token && initialResults?.responses?.token && initialResults?.responses?.token
                   .slice(0, acSettings.token)
                   .map((recomendation, index) => (
@@ -297,7 +300,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       </a>
                     </div>
                   ))}
-
+                {initialResults?.responses?.attributes && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Attributes</h2>}
                 {initialResults?.responses?.attributes && initialResults?.responses?.attributes
                   .slice(0, acSettings.attributes)
                   .map((collection, index) => (
@@ -338,12 +341,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                 <Link href={`https://www.wat.to/`}>
-                  <a className='p-4 flex w-full items-center justify-center italic font-semibold cursor-pointer dark:hover:bg-neutral-800 ' href='https://www.wat.to/' >
-                    Powered by <span className=' ml-2 italic'>WAT</span>
+                  <a className='flex items-center justify-center w-full p-2 text-sm cursor-pointer bg-neutral-800 dark:hover:text-neutral-200' href='https://www.wat.to/' >
+                    Powered by WAT
                     <img
                       src="/logoWAT.png"
                       alt={`logo wat`}
-                      className="overflow-hidden h-10 w-10 ml-2"
+                      className="w-8 h-8 ml-2 overflow-hidden"
                     />
                   </a>
                 </Link>
@@ -366,6 +369,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
               {...getMenuProps()}
             >
+              {results?.responses?.smart_search && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Smart Search</h2>}
               {results?.responses?.smart_search && results?.responses?.smart_search
                 .slice(0, acSettings.smartSearch)
                 .map((recomendation, index) => (
@@ -396,6 +400,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </a>
                   </div>
                 ))}
+              {results?.responses?.collections && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Collections</h2>}
               {results?.responses?.collections && results?.responses?.collections
                 .slice(0, acSettings.collections)
                 .map((collection, index) => (
@@ -433,6 +438,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </a>
                   </Link>
                 ))}
+              {results?.responses?.token && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Tokens</h2>}
               {results?.responses?.token && results?.responses?.token
                 .slice(0, acSettings.token)
                 .map((recomendation, index) => (
@@ -462,7 +468,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </a>
                   </div>
                 ))}
-
+              {results?.responses?.attributes && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Attributes</h2>}
               {results?.responses?.attributes && results?.responses?.attributes
                 .slice(0, acSettings.attributes)
                 .map((collection, index) => (
@@ -507,11 +513,11 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
 
                   className={`p-4 flex w-full font-xs items-center justify-center italic font-semibold cursor-pointer dark:hover:bg-neutral-800 `}
                   href='https://www.wat.to/' >
-                  Powered by <span className=' ml-2 italic'>WAT</span>
+                  Powered by <span className='ml-2 italic '>WAT</span>
                   <img
                     src="/logoWAT.png"
                     alt={`logo wat`}
-                    className="overflow-hidden h-10 w-10 ml-2"
+                    className="w-10 h-10 ml-2 overflow-hidden"
                   />
                 </a>
               </Link>
