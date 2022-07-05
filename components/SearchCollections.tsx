@@ -341,12 +341,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                 <Link href={`https://www.wat.to/`}>
-                  <a className='flex items-center justify-center w-full p-2 text-sm cursor-pointer bg-neutral-800 dark:hover:text-neutral-200' href='https://www.wat.to/' >
+                  <a className='flex items-center justify-center w-full p-2 text-sm cursor-pointer bg-neutral-900 dark:hover:text-neutral-200' href='https://www.wat.to/' >
                     Powered by WAT
                     <img
                       src="/logoWAT.png"
                       alt={`logo wat`}
-                      className="w-8 h-8 ml-2 overflow-hidden"
+                      className="w-8 h-8 ml-2 overflow-hidden rounded-full"
                     />
                   </a>
                 </Link>
@@ -509,12 +509,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   </Link>
                 ))}
               <Link href={`https://www.wat.to/`}>
-                <a className='flex items-center justify-center w-full p-2 text-sm cursor-pointer bg-neutral-800 dark:hover:text-neutral-200' href='https://www.wat.to/' >
+                <a className='flex items-center justify-center w-full p-2 text-sm cursor-pointer bg-neutral-900 dark:hover:text-neutral-200' href='https://www.wat.to/' >
                   Powered by WAT
                   <img
                     src="/logoWAT.png"
                     alt={`logo wat`}
-                    className="w-8 h-8 ml-2 overflow-hidden"
+                    className="w-8 h-8 ml-2 overflow-hidden border rounded-full "
                   />
                 </a>
               </Link>
