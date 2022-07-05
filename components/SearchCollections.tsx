@@ -6,7 +6,7 @@ import setParams from 'lib/params'
 import debounce from 'lodash.debounce'
 import { FiSearch, FiXCircle } from 'react-icons/fi'
 import { paths } from '@reservoir0x/client-sdk/dist/types/api'
-
+import logoWAT from 'public/logoWAT.png'
 
 type WatApiResponse = {
   responses: {
@@ -307,7 +307,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     >
                       <a
                         {...getItemProps({
-                          key: collection,
+                          key: index,
                           index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
                           item: collection.collection_name + collection.key + collection.value,
                         })}
@@ -337,6 +337,16 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       </a>
                     </Link>
                   ))}
+                <Link href={`https://www.wat.to/`}>
+                  <a className='p-4 flex w-full items-center justify-center italic font-semibold cursor-pointer dark:hover:bg-neutral-600 ' href='https://www.wat.to/' >
+                    Powered by <span className=' ml-2 italic'>WAT</span>
+                    <img
+                      src="/logoWAT.png"
+                      alt={`logo wat`}
+                      className="overflow-hidden h-10 w-10 ml-2"
+                    />
+                  </a>
+                </Link>
               </div>
             )}
 
@@ -492,6 +502,16 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </a>
                   </Link>
                 ))}
+              <Link href={`https://www.wat.to/`}>
+                <a className='p-4 flex w-full items-center justify-center italic font-semibold cursor-pointer dark:hover:bg-neutral-600 ' href='https://www.wat.to/' >
+                  Powered by <span className=' ml-2 italic'>WAT</span>
+                  <img
+                    src="/logoWAT.png"
+                    alt={`logo wat`}
+                    className="overflow-hidden h-10 w-10 ml-2"
+                  />
+                </a>
+              </Link>
             </div>
           )}
         </div>
