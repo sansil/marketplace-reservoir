@@ -514,7 +514,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   <img
                     src="/logoWAT.png"
                     alt={`logo wat`}
-                    className="w-8 h-8 ml-2 overflow-hidden border rounded-full "
+                    className="w-8 h-8 ml-2 overflow-hidden rounded-full "
                   />
                 </a>
               </Link>
