@@ -49,20 +49,19 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
   }
 
 
-  const fetchWAT = (search_query) => {
-    let formData = new FormData()
-    formData.append('start', "0")
-    formData.append('limit', "20")
-    formData.append('buy_now', "true")
-    formData.append('nlu_only', "true")
-    formData.append('search_query', search_query)
+  const fetchWAT = (search_query: string) => {
 
-    const data = new URLSearchParams();
-    for (const pair of formData) {
-      data.append(pair[0], pair[1]);
-    }
+    const options = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'x-api-key': '82cadfbf7d1a9da976e91655ada741a2',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ search_query: search_query, start: 0, limit: 10, buy_now: true, nlu_only: true })
+    };
 
-    fetch('https://api.smartnftsearch.xyz/search/', { method: "post", body: data }).then((res) => {
+    fetch('https://api.smartnftsearch.xyz/search/nft-search', options).then((res) => {
       res.json().then((data) => {
         if (data.error === 0 && data.request_type === 'attribute_search') {
           //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
@@ -79,15 +78,13 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
             console.log(url)
             router.push(`/collections/${data.request_response.contract_address}?${url}`)
           }
-
         }
-
         else if (data.error === 0 && data.request_type === 'pfp_search') {
           //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
           router.push(`/${data.request_response.contract_address}/${data.request_response.token_id}`)
 
         } else {
-          alert("Sorry no supported yet")
+          alert("Sorry, no supported yet.")
         }
       })
     })
@@ -221,7 +218,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       <a
                         {...getItemProps({
                           key: collection,
-                          index: index + initialResults?.responses.collections.slice(0, 4).length,
+                          index: index + initialResults?.responses?.collections.slice(0, 4).length,
 
                           item: collection,
                         })}
@@ -229,7 +226,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses.smart_search?.slice(0, 4).length)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses?.smart_search?.slice(0, 4).length)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
@@ -268,7 +265,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           setFocused(false)
                           fetchWAT(collection)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses.smart_search?.slice(0, 4).length + initialResults?.responses?.collections
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses?.smart_search?.slice(0, 4).length + initialResults?.responses?.collections
                           .slice(0, 3).length)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
@@ -302,7 +299,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses.smart_search?.slice(0, 4).length + initialResults?.responses?.collections
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses?.smart_search?.slice(0, 4).length + initialResults?.responses?.collections
                           .slice(0, 3).length + initialResults?.responses?.token.slice(0, 3).length)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
