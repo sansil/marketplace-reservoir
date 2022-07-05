@@ -155,8 +155,8 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     <Downshift
       onInputValueChange={(value) => debouncedSearch(value)}
       id="search-bar-downshift"
-      onChange={(item) => console.log(item)}
-    // itemToString={(item) => (item ? item.name : '')}
+      onChange={(item) => fetchWAT(item)}
+    //itemToString={(item) => (item ? item.name : '')}
     >
       {({
         getInputProps,
