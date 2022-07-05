@@ -509,15 +509,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   </Link>
                 ))}
               <Link href={`https://www.wat.to/`}>
-                <a
-
-                  className={`p-4 flex w-full font-xs items-center justify-center italic font-semibold cursor-pointer dark:hover:bg-neutral-800 `}
-                  href='https://www.wat.to/' >
-                  Powered by <span className='ml-2 italic '>WAT</span>
+                <a className='flex items-center justify-center w-full p-2 text-sm cursor-pointer bg-neutral-800 dark:hover:text-neutral-200' href='https://www.wat.to/' >
+                  Powered by WAT
                   <img
                     src="/logoWAT.png"
                     alt={`logo wat`}
-                    className="w-10 h-10 ml-2 overflow-hidden"
+                    className="w-8 h-8 ml-2 overflow-hidden"
                   />
                 </a>
               </Link>
