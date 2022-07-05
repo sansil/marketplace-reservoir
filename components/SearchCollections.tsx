@@ -338,7 +338,6 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                 <Link href={`https://www.wat.to/`}>
-
                   <a className='p-4 flex w-full items-center justify-center italic font-semibold cursor-pointer dark:hover:bg-neutral-800 ' href='https://www.wat.to/' >
                     Powered by <span className=' ml-2 italic'>WAT</span>
                     <img

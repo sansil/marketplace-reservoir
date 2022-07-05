@@ -32,7 +32,7 @@ class MyDocument extends Document {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={SOURCE_ID} />
         <meta name="keywords" content="nft, ethereum, protocol" />
-        <link rel="shortcut icon" type="image/svg" href={FAVICON} />
+        <link rel="shortcut icon" type="image/svg" href="favicon.ico" />
         <title>{META_TITLE}</title>
         <meta name="description" content={META_DESCRIPTION} />
         <meta name="keywords" content="NFT, API, Protocol" />
@@ -68,8 +68,8 @@ class MyDocument extends Document {
 
         {FONT_URLS
           ? FONT_URLS.split(',').map((link, i) => (
-              <link key={i} href={link} rel="stylesheet" />
-            ))
+            <link key={i} href={link} rel="stylesheet" />
+          ))
           : null}
 
         <body className="bg-white text-neutral-800 dark:bg-black dark:text-white">
