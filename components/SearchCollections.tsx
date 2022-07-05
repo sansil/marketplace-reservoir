@@ -34,7 +34,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
   function getHref(search?: string) {
     const pathname = `${PROXY_API_BASE}/search/collections/v1`
 
-    const query: paths['/search/collections/v1']['get']['parameters']['query'] =
+    const query: paths['/search/collections/v1']['get']['parameters']['query']['wat'] =
     {
       limit: 6,
     }
@@ -179,7 +179,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               >
                 {/* <h2>holi manil{highlightedIndex}</h2> */}
                 {initialResults?.responses?.smart_search
-                  .slice(0, 4)
+                  .slice(0, acSettings.smartSearch)
                   .map((collection, index) => (
                     <div
                       key={collection}
@@ -209,7 +209,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </div>
                   ))}
                 {initialResults?.responses?.collections
-                  .slice(0, 3)
+                  .slice(0, acSettings.collections)
                   .map((collection, index) => (
                     <Link
                       key={collection?.name}
@@ -218,7 +218,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       <a
                         {...getItemProps({
                           key: collection,
-                          index: index + initialResults?.responses?.collections.slice(0, 4).length,
+                          index: index + acSettings.smartSearch,
 
                           item: collection,
                         })}
@@ -226,7 +226,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses?.smart_search?.slice(0, 4).length)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
@@ -246,7 +246,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     </Link>
                   ))}
                 {initialResults?.responses?.token
-                  .slice(0, 3)
+                  .slice(0, acSettings.token)
                   .map((collection, index) => (
                     <div
                       key={collection?.name}
@@ -255,9 +255,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       <a
                         {...getItemProps({
                           key: collection,
-                          index: index + initialResults?.responses?.smart_search
-                            .slice(0, 4).length + initialResults?.responses?.collections
-                              .slice(0, 3).length,
+                          index: index + acSettings.smartSearch + acSettings.collections,
                           item: collection,
                         })}
                         onClick={() => {
@@ -265,8 +263,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           setFocused(false)
                           fetchWAT(collection)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses?.smart_search?.slice(0, 4).length + initialResults?.responses?.collections
-                          .slice(0, 3).length)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
@@ -279,7 +276,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   ))}
 
                 {initialResults?.responses?.attributes
-                  .slice(0, 3)
+                  .slice(0, acSettings.attributes)
                   .map((collection, index) => (
                     <Link
                       key={collection?.name}
@@ -299,8 +296,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + initialResults?.responses?.smart_search?.slice(0, 4).length + initialResults?.responses?.collections
-                          .slice(0, 3).length + initialResults?.responses?.token.slice(0, 3).length)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections + acSettings.token)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
