@@ -90,7 +90,6 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     })
   }
 
-
   const [count, setCount] = useState(0)
   const countRef = useRef(count)
   countRef.current = count
@@ -177,24 +176,23 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
                 {...getMenuProps()}
               >
-                {/* <h2>holi manil{highlightedIndex}</h2> */}
-                {initialResults?.responses?.smart_search
+                {initialResults?.responses?.smart_search && initialResults?.responses?.smart_search
                   .slice(0, acSettings.smartSearch)
-                  .map((collection, index) => (
+                  .map((recomendation, index) => (
                     <div
-                      key={collection}
+                      key={recomendation}
                       className="cursor-pointer"
                     >
                       <a
                         {...getItemProps({
-                          key: collection,
+                          key: recomendation,
                           index,
-                          item: collection,
+                          item: recomendation,
                         })}
                         onClick={() => {
                           reset()
                           setFocused(false)
-                          fetchWAT(collection)
+                          fetchWAT(recomendation)
                         }}
                         className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
@@ -203,12 +201,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       >
 
                         <span className="ml-2 reservoir-subtitle dark:text-white">
-                          {collection}
+                          {recomendation}
                         </span>
                       </a>
                     </div>
                   ))}
-                {initialResults?.responses?.collections
+                {initialResults?.responses?.collections && initialResults?.responses?.collections
                   .slice(0, acSettings.collections)
                   .map((collection, index) => (
                     <Link
@@ -245,23 +243,23 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       </a>
                     </Link>
                   ))}
-                {initialResults?.responses?.token
+                {initialResults?.responses?.token && initialResults?.responses?.token && initialResults?.responses?.token
                   .slice(0, acSettings.token)
-                  .map((collection, index) => (
+                  .map((recomendation, index) => (
                     <div
-                      key={collection?.name}
+                      key={recomendation}
                       className="cursor-pointer"
                     >
                       <a
                         {...getItemProps({
-                          key: collection,
+                          key: recomendation,
                           index: index + acSettings.smartSearch + acSettings.collections,
-                          item: collection,
+                          item: recomendation,
                         })}
                         onClick={() => {
                           reset()
                           setFocused(false)
-                          fetchWAT(collection)
+                          fetchWAT(recomendation)
                         }}
                         className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
@@ -269,13 +267,13 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                           }`}
                       >
                         <span className="ml-2 reservoir-subtitle dark:text-white">
-                          {collection}
+                          {recomendation}
                         </span>
                       </a>
                     </div>
                   ))}
 
-                {initialResults?.responses?.attributes
+                {initialResults?.responses?.attributes && initialResults?.responses?.attributes
                   .slice(0, acSettings.attributes)
                   .map((collection, index) => (
                     <Link
@@ -333,135 +331,142 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
               {...getMenuProps()}
             >
-              {results?.responses?.smart_search && <h2 className='flex items-center font-semibold py-1 px-5 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Smart Search</h2>}
-              {results?.responses && results?.responses.smart_search?.slice(0, 3).map((collection, index) => (
-                <div
-                  key={index}
-                  className="cursor-pointer"
-                >
-                  <a
-                    {...getItemProps({
-                      key: collection,
-                      index,
-                      item: collection,
-                    })}
-                    onClick={() => {
-                      reset()
-                      setFocused(false)
-                      fetchWAT(collection)
-                    }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
+              {results?.responses?.smart_search && results?.responses?.smart_search
+                .slice(0, acSettings.smartSearch)
+                .map((recomendation, index) => (
+                  <div
+                    key={recomendation}
+                    className="cursor-pointer"
                   >
-                    {/* <img
-                      src={
-                        collection?.image ?? 'https://via.placeholder.com/30'
-                      }
-                      alt={`${collection?.name}'s logo.`}
-                      className="overflow-hidden rounded-full h-9 w-9"
-                    /> */}
-                    <span className="ml-2 reservoir-subtitle dark:text-white">
-                      {collection}
-                    </span>
-                  </a>
-                </div>
-              ))}
-              {results?.responses?.collections?.length > 0 && <h2 className='flex items-center font-semibold py-1 px-5 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Collections</h2>}
-              {results?.responses?.collections?.slice(0, 4).map((collection, index) => (
-                <Link
-                  key={index}
-                  href={`/collections/${collection?.collection_contract}`}
-                >
-                  <a
-                    {...getItemProps({
-                      key: collection,
-                      index,
-                      item: collection,
-                    })}
-                    onClick={() => {
-                      reset()
-                      setFocused(false)
-                    }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
+                    <a
+                      {...getItemProps({
+                        key: recomendation,
+                        index,
+                        item: recomendation,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                        fetchWAT(recomendation)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index)
+                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
+                        : ''
+                        }`}
+                    >
+
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {recomendation}
+                      </span>
+                    </a>
+                  </div>
+                ))}
+              {results?.responses?.collections && results?.responses?.collections
+                .slice(0, acSettings.collections)
+                .map((collection, index) => (
+                  <Link
+                    key={collection?.name}
+                    href={`/collections/${collection?.collection_contract}`}
                   >
-                    <img
-                      src={
-                        collection?.collection_image ?? 'https://via.placeholder.com/30'
-                      }
-                      alt={`${collection?.collection_image}'s logo.`}
-                      className="overflow-hidden rounded-full h-9 w-9"
-                    />
-                    <span className="ml-2 reservoir-subtitle dark:text-white">
-                      {collection.collection_name}
-                    </span>
-                  </a>
-                </Link>
-              ))}
-              {results?.responses?.token && <h2 className='flex items-center font-semibold py-1 px-5 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Tokens</h2>}
-              {results?.responses?.token?.slice(0, 3).map((collection, index) => (
-                <Link
-                  key={index}
-                  href={`#`}
-                >
-                  <a
-                    {...getItemProps({
-                      key: collection,
-                      index,
-                      item: collection,
-                    })}
-                    onClick={() => {
-                      reset()
-                      setFocused(false)
-                      fetchWAT(collection)
-                    }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
+                    <a
+                      {...getItemProps({
+                        key: collection,
+                        index: index + acSettings.smartSearch,
+
+                        item: collection,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch)
+                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
+                        : ''
+                        }`}
+                    >
+                      <img
+                        src={
+                          collection?.collection_image ??
+                          'https://via.placeholder.com/30'
+                        }
+                        alt={`${collection?.collection_name}'s logo.`}
+                        className="overflow-hidden rounded-full h-9 w-9"
+                      />
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {collection.collection_name}
+                      </span>
+                    </a>
+                  </Link>
+                ))}
+              {results?.responses?.token && results?.responses?.token
+                .slice(0, acSettings.token)
+                .map((recomendation, index) => (
+                  <div
+                    key={recomendation}
+                    className="cursor-pointer"
                   >
-                    {/* <img
-                      src={
-                        collection?.image ?? 'https://via.placeholder.com/30'
-                      }
-                      alt={`${collection?.name}'s logo.`}
-                      className="overflow-hidden rounded-full h-9 w-9"
-                    /> */}
-                    <span className="ml-2 reservoir-subtitle dark:text-white">
-                      {collection}
-                    </span>
-                  </a>
-                </Link>
-              ))}
-              {results?.responses?.attributes && <h2 className='flex items-center font-semibold py-1 px-5 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 text-amber-600'>Attributes</h2>}
-              {results?.responses?.attributes?.slice(0, 4).map((collection, index) => (
-                <Link
-                  key={index}
-                  href={`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`}
-                >
-                  <a
-                    {...getItemProps({
-                      key: collection,
-                      index,
-                      item: collection,
-                    })}
-                    onClick={() => {
-                      reset()
-                      setFocused(false)
-                    }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
+                    <a
+                      {...getItemProps({
+                        key: recomendation,
+                        index: index + acSettings.smartSearch + acSettings.collections,
+                        item: recomendation,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                        fetchWAT(recomendation)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections)
+                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
+                        : ''
+                        }`}
+                    >
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {recomendation}
+                      </span>
+                    </a>
+                  </div>
+                ))}
+
+              {results?.responses?.attributes && results?.responses?.attributes
+                .slice(0, acSettings.attributes)
+                .map((collection, index) => (
+                  <Link
+                    key={collection?.name}
+                    href={`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`}
                   >
-                    <img
-                      src={
-                        collection?.collection_image ?? 'https://via.placeholder.com/30'
-                      }
-                      alt={`${collection?.collection_image}'s logo.`}
-                      className="overflow-hidden rounded-full h-9 w-9"
-                    />
-                    <span className="ml-2 reservoir-subtitle dark:text-white">
-                      {collection.collection_name}
-                    </span>
-                    <span className="px-2 py-1 ml-2 text-xs rounded-md reservoir-subtitle dark:text-white bg-neutral-700">
-                      {collection.key} {collection.value}
-                    </span>
-                  </a>
-                </Link>
-              ))}
+                    <a
+                      {...getItemProps({
+                        key: collection,
+                        index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
+                        item: collection,
+                      })}
+                      onClick={() => {
+                        reset()
+                        setFocused(false)
+                      }}
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections + acSettings.token)
+                        ? 'bg-[#F3F4F6] dark:bg-neutral-600'
+                        : ''
+                        }`}
+                    >
+                      <img
+                        src={
+                          collection?.collection_image ??
+                          'https://via.placeholder.com/30'
+                        }
+                        alt={`${collection?.collection_name}'s logo.`}
+                        className="overflow-hidden rounded-full h-9 w-9"
+                      />
+                      <span className="ml-2 reservoir-subtitle dark:text-white">
+                        {collection.collection_name}
+                      </span>
+                      <span className="px-2 py-1 ml-2 text-xs rounded-md reservoir-subtitle dark:text-white bg-neutral-700">
+                        {collection.key} {collection.value}
+                      </span>
+                    </a>
+                  </Link>
+                ))}
             </div>
           )}
         </div>
