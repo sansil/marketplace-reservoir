@@ -7,13 +7,40 @@ import debounce from 'lodash.debounce'
 import { FiSearch, FiXCircle } from 'react-icons/fi'
 import { paths } from '@reservoir0x/client-sdk/dist/types/api'
 
+
+type WatApiResponse = {
+  responses: {
+    smart_search?: string[],
+    collections?:
+    {
+      collection_name: string,
+      collection_contract: string,
+      collection_image: string,
+      key: string,
+      value: string
+    }[],
+    token?: string[],
+    attributes?: [
+      {
+        collection_name: string,
+        collection_contract: string,
+        collection_image: string,
+        key: string,
+        value: string
+      }
+    ]
+  };
+}
+
 type SearchCollectionsAPISuccessResponse =
-  paths['/search/collections/v1']['get']['responses']['200']['schema']
+  paths['/search/collections/v1']['get']['responses']['200']['schema'] | WatApiResponse
 
 type Props = {
   communityId?: string
   initialResults?: SearchCollectionsAPISuccessResponse
 }
+
+
 
 const PROXY_API_BASE = process.env.NEXT_PUBLIC_PROXY_API_BASE
 
@@ -34,7 +61,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
   function getHref(search?: string) {
     const pathname = `${PROXY_API_BASE}/search/collections/v1`
 
-    const query: paths['/search/collections/v1']['get']['parameters']['query']['wat'] =
+    const query: paths['/search/collections/v1']['get']['parameters']['query'] =
     {
       limit: 6,
     }
@@ -64,12 +91,11 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     fetch('https://api.smartnftsearch.xyz/search/nft-search', options).then((res) => {
       res.json().then((data) => {
         if (data.error === 0 && data.request_type === 'attribute_search') {
-          //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
           if (data.request_response.attributes.length > 0) {
             const search_attributes = data.request_response.attributes
             let url = ""
             search_attributes.forEach((attr, index) => {
-              if (url.includes(attr.key)) return
+              if (url.includes(attr.key)) return // limitation from reservoir marketplace, only on filter for attribute
               if (index == 0)
                 url = `attributes%5B${attr.key}%5D=${attr.value}`
               else
@@ -123,7 +149,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     []
   )
 
-  const isEmpty = results?.collections?.length === 0
+  const isEmpty = results?.responses?.smart_search?.length === 0
 
   return (
     <Downshift
@@ -210,14 +236,13 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   .slice(0, acSettings.collections)
                   .map((collection, index) => (
                     <Link
-                      key={collection?.name}
+                      key={index}
                       href={`/collections/${collection?.collection_contract}`}
                     >
                       <a
                         {...getItemProps({
-                          key: collection,
+                          key: index,
                           index: index + acSettings.smartSearch,
-
                           item: collection,
                         })}
                         onClick={() => {

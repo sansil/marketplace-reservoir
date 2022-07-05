@@ -70,7 +70,7 @@ const Navbar: FC = () => {
         if (res.ok) {
           initialResults =
             (await res.json()) as paths['/search/collections/v1']['get']['responses']['200']['schema']
-          console.log('sansil', initialResults)
+
         }
 
         const smallCommunity =
