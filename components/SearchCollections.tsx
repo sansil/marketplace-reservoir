@@ -52,7 +52,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
   const fetchWAT = (search_query: string) => {
 
     const options = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'x-api-key': '82cadfbf7d1a9da976e91655ada741a2',
@@ -285,11 +285,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       <a
                         {...getItemProps({
                           key: collection,
-                          index: index + initialResults?.responses?.smart_search
-                            .slice(0, 4).length + initialResults?.responses?.collections
-                              .slice(0, 3).length + initialResults?.responses?.token
-                                .slice(0, 3).length,
-
+                          index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
                           item: collection,
                         })}
                         onClick={() => {
@@ -331,43 +327,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               <div className="flex items-center p-4">No collections found</div>
             </div>
           )}
-          {/* {(focused || isOpen) && inputValue !== '' && !isEmpty && (
-            <div
-              className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
-              {...getMenuProps()}
-            >
-              {results?.collections?.slice(0, 6).map((collection, index) => (
-                <Link
-                  key={collection?.name}
-                  href={`/collections/${collection?.collectionId}`}
-                >
-                  <a
-                    {...getItemProps({
-                      key: collection?.name,
-                      index,
-                      item: collection,
-                    })}
-                    onClick={() => {
-                      reset()
-                      setFocused(false)
-                    }}
-                    className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 `}
-                  >
-                    <img
-                      src={
-                        collection?.image ?? 'https://via.placeholder.com/30'
-                      }
-                      alt={`${collection?.name}'s logo.`}
-                      className="overflow-hidden rounded-full h-9 w-9"
-                    />
-                    <span className="ml-2 reservoir-subtitle dark:text-white">
-                      {collection?.name}
-                    </span>
-                  </a>
-                </Link>
-              ))}
-            </div>
-          )} */}
+
           {(focused || isOpen) && inputValue !== '' && !isEmpty && (
             <div
               className="absolute top-[50px] z-10 w-full divide-y-[1px] divide-[#D1D5DB] overflow-hidden rounded-[8px] border border-[#D1D5DB] bg-white dark:divide-neutral-600 dark:border-neutral-600 dark:bg-neutral-900"
