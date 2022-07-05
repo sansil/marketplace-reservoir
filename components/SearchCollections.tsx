@@ -243,7 +243,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                         {...getItemProps({
                           key: index,
                           index: index + acSettings.smartSearch,
-                          item: collection,
+                          item: collection.collection_name,
                         })}
                         onClick={() => {
                           reset()
@@ -309,7 +309,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                         {...getItemProps({
                           key: collection,
                           index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
-                          item: collection,
+                          item: collection.collection_name + collection.key + collection.value,
                         })}
                         onClick={() => {
                           reset()
@@ -398,7 +398,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                         key: collection,
                         index: index + acSettings.smartSearch,
 
-                        item: collection,
+                        item: collection.collection_name,
                       })}
                       onClick={() => {
                         reset()
@@ -464,7 +464,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       {...getItemProps({
                         key: collection,
                         index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
-                        item: collection,
+                        item: collection.collection_name + collection.key + collection.value,
                       })}
                       onClick={() => {
                         reset()
@@ -495,8 +495,9 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
             </div>
           )}
         </div>
-      )}
-    </Downshift>
+      )
+      }
+    </Downshift >
   )
 }
 
