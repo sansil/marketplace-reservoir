@@ -8,32 +8,33 @@ import { FiSearch, FiXCircle } from 'react-icons/fi'
 import { paths } from '@reservoir0x/client-sdk/dist/types/api'
 import logoWAT from 'public/logoWAT.png'
 
-type WatApiResponse = {
-  responses: {
-    smart_search?: string[],
-    collections?:
-    {
-      collection_name: string,
-      collection_contract: string,
-      collection_image: string,
-      key: string,
-      value: string
-    }[],
-    token?: string[],
-    attributes?:
-    {
-      collection_name: string,
-      collection_contract: string,
-      collection_image: string,
-      key: string,
-      value: string
-    }[]
-
-  };
+interface collections_wat {
+  collection_name: string,
+  collection_contract: string,
+  collection_image: string,
+}
+interface attributes_wat {
+  collection_name: string,
+  collection_contract: string,
+  collection_image: string,
+  key: string,
+  value: string
 }
 
-type SearchCollectionsAPISuccessResponse =
-  paths['/search/collections/v1']['get']['responses']['200']['schema'] | WatApiResponse
+interface Response_wat {
+  smart_search?: string[],
+  collections?: collections_wat[],
+  token?: string[],
+  attributes?: attributes_wat[]
+}
+
+type WatApiResponse = {
+  responses?: Response_wat;
+}
+
+
+type SearchCollectionsAPISuccessResponse = WatApiResponse
+// paths['/search/collections/v1']['get']['responses']['200']['schema'] | WatApiResponse
 
 type Props = {
   communityId?: string
@@ -305,7 +306,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   .slice(0, acSettings.attributes)
                   .map((collection, index) => (
                     <Link
-                      key={collection?.name}
+                      key={index}
                       href={`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`}
                     >
                       <a
@@ -405,12 +406,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 .slice(0, acSettings.collections)
                 .map((collection, index) => (
                   <Link
-                    key={collection?.name}
+                    key={index}
                     href={`/collections/${collection?.collection_contract}`}
                   >
                     <a
                       {...getItemProps({
-                        key: collection,
+                        key: collection.collection_name,
                         index: index + acSettings.smartSearch,
 
                         item: collection.collection_name,
@@ -473,12 +474,12 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 .slice(0, acSettings.attributes)
                 .map((collection, index) => (
                   <Link
-                    key={collection?.name}
+                    key={index}
                     href={`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`}
                   >
                     <a
                       {...getItemProps({
-                        key: collection,
+                        key: collection.collection_name,
                         index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
                         item: collection.collection_name + collection.key + collection.value,
                       })}
