@@ -60,44 +60,61 @@ const Navbar: FC = () => {
   useEffect(() => {
     if (filterableCollection) {
       // const href = getInitialSearchHref()
-      const href = `https://api.smartnftsearch.xyz/search/autocomplete?search_query=${''}&search_types=name_autocomplete,individual_attributes,token_search,individual_attributes,attribute_search`
+      const href = `https://api.smartnftsearch.xyz/search/nft-autocomplete?search_query=&search_types=name_autocomplete,individual_attributes,token_search,individual_attributes,attribute_search`
 
-      fetch(href).then(async (res) => {
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'x-api-key': '82cadfbf7d1a9da976e91655ada741a2',
+          'Content-Type': 'application/json'
+        }
+      };
+
+      fetch(href, fetchOptions).then(async (res) => {
         let initialResults = undefined
 
 
 
         if (res.ok) {
           initialResults =
-            (await res.json()) as paths['/search/collections/v1']['get']['responses']['200']['schema']
+            (await res.json()) as WatApiAutocompleteResponse
 
         }
 
-        const smallCommunity =
-          initialResults?.collections &&
-          initialResults.collections.length >= 2 &&
-          initialResults.collections.length <= 10
 
-        if (
-          !DEFAULT_TO_SEARCH &&
-          (COMMUNITY || COLLECTION_SET_ID) &&
-          smallCommunity
-        ) {
-          setFilterComponent(
-            <CommunityDropdown
-              collections={initialResults?.collections}
-              defaultCollectionId={COLLECTION}
-            />
-          )
-        } else {
-          setShowLinks(false)
-          setFilterComponent(
-            <SearchCollections
-              communityId={COMMUNITY}
-              initialResults={initialResults}
-            />
-          )
-        }
+        setShowLinks(false)
+        setFilterComponent(
+          <SearchCollections
+            communityId={COMMUNITY}
+            initialResults={initialResults}
+          />
+        )
+
+        // const smallCommunity =
+        //   initialResults?.collections &&
+        //   initialResults.collections.length >= 2 &&
+        //   initialResults.collections.length <= 10
+        // if (
+        //   !DEFAULT_TO_SEARCH &&
+        //   (COMMUNITY || COLLECTION_SET_ID) &&
+        //   smallCommunity
+        // ) {
+        //   setFilterComponent(
+        //     <CommunityDropdown
+        //       collections={initialResults?.collections}
+        //       defaultCollectionId={COLLECTION}
+        //     />
+        //   )
+        // } else {
+        //   setShowLinks(false)
+        //   setFilterComponent(
+        //     <SearchCollections
+        //       communityId={COMMUNITY}
+        //       initialResults={initialResults}
+        //     />
+        //   )
+        // }
       })
     }
   }, [filterableCollection])

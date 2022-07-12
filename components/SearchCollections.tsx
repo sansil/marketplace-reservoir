@@ -8,32 +8,9 @@ import { FiSearch, FiXCircle } from 'react-icons/fi'
 import { paths } from '@reservoir0x/client-sdk/dist/types/api'
 import logoWAT from 'public/logoWAT.png'
 
-interface collections_wat {
-  collection_name: string,
-  collection_contract: string,
-  collection_image: string,
-}
-interface attributes_wat {
-  collection_name: string,
-  collection_contract: string,
-  collection_image: string,
-  key: string,
-  value: string
-}
-
-interface Response_wat {
-  smart_search?: string[],
-  collections?: collections_wat[],
-  token?: string[],
-  attributes?: attributes_wat[]
-}
-
-type WatApiResponse = {
-  responses?: Response_wat;
-}
 
 
-type SearchCollectionsAPISuccessResponse = WatApiResponse
+type SearchCollectionsAPISuccessResponse = WatApiAutocompleteResponse
 // paths['/search/collections/v1']['get']['responses']['200']['schema'] | WatApiResponse
 
 type Props = {
@@ -52,7 +29,8 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     {}
   )
 
-  const acSettings = {
+  // how many items of each category display on autocomplete
+  const autocompleteSettings = {
     smartSearch: 3,
     collections: 4,
     token: 3,
@@ -76,7 +54,6 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     return setParams(pathname, query)
   }
 
-
   const fetchWAT = (search_query: string) => {
 
     const options = {
@@ -88,33 +65,36 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
       },
       body: JSON.stringify({ search_query: search_query, start: 0, limit: 10, buy_now: true, nlu_only: true })
     };
+    try {
+      fetch('https://api.smartnftsearch.xyz/search/nft-search', options).then((res) => {
+        res.json().then((data: WatApiSearchResponse) => {
+          if (data.error === 0 && data.request_type === 'attribute_search') {
+            const search_attributes = data.request_response.attributes
+            let url = ""
+            search_attributes.forEach((attr, index) => {
+              if (url.includes(attr.key)) return // reservoir marketplace only accept on filter for attribute
+              if (index == 0)
+                url = `attributes%5B${attr.key}%5D=${attr.value}`
+              else
+                url = url + `&attributes%5B${attr.key}%5D=${attr.value}`
+            })
+            console.log(url)
+            router.push(`/collections/${data.request_response.contract_address}?${url}`)
+          }
+          else if (data.error === 0 && data.request_type === 'pfp_search') {
+            //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
+            router.push(`/${data.request_response.contract_address}/${data.request_response.token_id}`)
 
-    fetch('https://api.smartnftsearch.xyz/search/nft-search', options).then((res) => {
-
-      res.json().then((data) => {
-        console.log(data)
-        if (data.error === 0 && data.request_type === 'attribute_search') {
-          const search_attributes = data.request_response.attributes
-          let url = ""
-          search_attributes.forEach((attr, index) => {
-            if (url.includes(attr.key)) return // limitation from reservoir marketplace, only on filter for attribute
-            if (index == 0)
-              url = `attributes%5B${attr.key}%5D=${attr.value}`
-            else
-              url = url + `&attributes%5B${attr.key}%5D=${attr.value}`
-          })
-          console.log(url)
-          router.push(`/collections/${data.request_response.contract_address}?${url}`)
-        }
-        else if (data.error === 0 && data.request_type === 'pfp_search') {
-          //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
-          router.push(`/${data.request_response.contract_address}/${data.request_response.token_id}`)
-
-        } else {
-          alert("Sorry, no supported yet.")
-        }
+          } else {
+            alert("Sorry, no supported yet.")
+          }
+        })
       })
-    })
+
+    } catch (error) {
+      console.error(error)
+    }
+
   }
 
   const [count, setCount] = useState(0)
@@ -128,20 +108,24 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
         setResults({})
         return
       }
-
       // Fetch new results
       setCount(countRef.current)
-
       //const href = getHref(value)
-      const href = `https://api.smartnftsearch.xyz/search/autocomplete?search_query=${value}&search_types=name_autocomplete,individual_attributes,token_search,individual_attributes,attribute_search`
+
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'x-api-key': '82cadfbf7d1a9da976e91655ada741a2',
+          'Content-Type': 'application/json'
+        }
+      };
+      const href = `https://api.smartnftsearch.xyz/search/nft-autocomplete?search_query=${value}&search_types=name_autocomplete,individual_attributes,token_search,individual_attributes,attribute_search`
 
       try {
-        const res = await fetch(href)
-
+        const res = await fetch(href, fetchOptions)
         const data = (await res.json()) as SearchCollectionsAPISuccessResponse
-        console.log('sansil', data)
         if (!data) throw new ReferenceError('Data does not exist.')
-
         setResults(data)
       } catch (err) {
         console.error(err)
@@ -205,22 +189,22 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
               >
                 {initialResults?.responses?.smart_search && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Smart Search</h2>}
                 {initialResults?.responses?.smart_search && initialResults?.responses?.smart_search
-                  .slice(0, acSettings.smartSearch)
-                  .map((recomendation, index) => (
+                  .slice(0, autocompleteSettings.smartSearch)
+                  .map((recommendation, index) => (
                     <div
-                      key={recomendation}
+                      key={index}
                       className="cursor-pointer"
                     >
                       <a
                         {...getItemProps({
-                          key: recomendation,
+                          key: index,
                           index,
-                          item: recomendation,
+                          item: recommendation,
                         })}
                         onClick={() => {
                           reset()
                           setFocused(false)
-                          fetchWAT(recomendation)
+                          fetchWAT(recommendation)
                         }}
                         className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
@@ -229,14 +213,14 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       >
 
                         <span className="ml-2 reservoir-subtitle dark:text-white">
-                          {recomendation}
+                          {recommendation}
                         </span>
                       </a>
                     </div>
                   ))}
                 {initialResults?.responses?.collections && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Collections</h2>}
                 {initialResults?.responses?.collections && initialResults?.responses?.collections
-                  .slice(0, acSettings.collections)
+                  .slice(0, autocompleteSettings.collections)
                   .map((collection, index) => (
                     <Link
                       key={index}
@@ -245,14 +229,14 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       <a
                         {...getItemProps({
                           key: index,
-                          index: index + acSettings.smartSearch,
+                          index: index + autocompleteSettings.smartSearch,
                           item: collection.collection_name,
                         })}
                         onClick={() => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + autocompleteSettings.smartSearch)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
@@ -273,37 +257,37 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                   ))}
                 {initialResults?.responses?.token && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Tokens</h2>}
                 {initialResults?.responses?.token && initialResults?.responses?.token && initialResults?.responses?.token
-                  .slice(0, acSettings.token)
-                  .map((recomendation, index) => (
+                  .slice(0, autocompleteSettings.token)
+                  .map((recommendation, index) => (
                     <div
-                      key={recomendation}
+                      key={recommendation}
                       className="cursor-pointer"
                     >
                       <a
                         {...getItemProps({
-                          key: recomendation,
-                          index: index + acSettings.smartSearch + acSettings.collections,
-                          item: recomendation,
+                          key: index,
+                          index: index + autocompleteSettings.smartSearch + autocompleteSettings.collections,
+                          item: recommendation,
                         })}
                         onClick={() => {
                           reset()
                           setFocused(false)
-                          fetchWAT(recomendation)
+                          fetchWAT(recommendation)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + autocompleteSettings.smartSearch + autocompleteSettings.collections)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
                       >
                         <span className="ml-2 reservoir-subtitle dark:text-white">
-                          {recomendation}
+                          {recommendation}
                         </span>
                       </a>
                     </div>
                   ))}
                 {initialResults?.responses?.attributes && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Attributes</h2>}
                 {initialResults?.responses?.attributes && initialResults?.responses?.attributes
-                  .slice(0, acSettings.attributes)
+                  .slice(0, autocompleteSettings.attributes)
                   .map((collection, index) => (
                     <Link
                       key={index}
@@ -312,14 +296,14 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                       <a
                         {...getItemProps({
                           key: index,
-                          index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
+                          index: index + autocompleteSettings.smartSearch + autocompleteSettings.collections + autocompleteSettings.token,
                           item: collection.collection_name + collection.key + collection.value,
                         })}
                         onClick={() => {
                           reset()
                           setFocused(false)
                         }}
-                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections + acSettings.token)
+                        className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + autocompleteSettings.smartSearch + autocompleteSettings.collections + autocompleteSettings.token)
                           ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                           : ''
                           }`}
@@ -372,22 +356,22 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
             >
               {results?.responses?.smart_search && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Smart Search</h2>}
               {results?.responses?.smart_search && results?.responses?.smart_search
-                .slice(0, acSettings.smartSearch)
-                .map((recomendation, index) => (
+                .slice(0, autocompleteSettings.smartSearch)
+                .map((recommendation, index) => (
                   <div
-                    key={recomendation}
+                    key={recommendation}
                     className="cursor-pointer"
                   >
                     <a
                       {...getItemProps({
-                        key: recomendation,
+                        key: recommendation,
                         index,
-                        item: recomendation,
+                        item: recommendation,
                       })}
                       onClick={() => {
                         reset()
                         setFocused(false)
-                        fetchWAT(recomendation)
+                        fetchWAT(recommendation)
                       }}
                       className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index)
                         ? 'bg-[#F3F4F6] dark:bg-neutral-600'
@@ -396,14 +380,14 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     >
 
                       <span className="ml-2 reservoir-subtitle dark:text-white">
-                        {recomendation}
+                        {recommendation}
                       </span>
                     </a>
                   </div>
                 ))}
               {results?.responses?.collections && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Collections</h2>}
               {results?.responses?.collections && results?.responses?.collections
-                .slice(0, acSettings.collections)
+                .slice(0, autocompleteSettings.collections)
                 .map((collection, index) => (
                   <Link
                     key={index}
@@ -412,7 +396,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     <a
                       {...getItemProps({
                         key: collection.collection_name,
-                        index: index + acSettings.smartSearch,
+                        index: index + autocompleteSettings.smartSearch,
 
                         item: collection.collection_name,
                       })}
@@ -420,7 +404,7 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                         reset()
                         setFocused(false)
                       }}
-                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch)
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + autocompleteSettings.smartSearch)
                         ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                         : ''
                         }`}
@@ -441,37 +425,37 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                 ))}
               {results?.responses?.token && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Tokens</h2>}
               {results?.responses?.token && results?.responses?.token
-                .slice(0, acSettings.token)
-                .map((recomendation, index) => (
+                .slice(0, autocompleteSettings.token)
+                .map((recommendation, index) => (
                   <div
-                    key={recomendation}
+                    key={recommendation}
                     className="cursor-pointer"
                   >
                     <a
                       {...getItemProps({
-                        key: recomendation,
-                        index: index + acSettings.smartSearch + acSettings.collections,
-                        item: recomendation,
+                        key: recommendation,
+                        index: index + autocompleteSettings.smartSearch + autocompleteSettings.collections,
+                        item: recommendation,
                       })}
                       onClick={() => {
                         reset()
                         setFocused(false)
-                        fetchWAT(recomendation)
+                        fetchWAT(recommendation)
                       }}
-                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections)
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + autocompleteSettings.smartSearch + autocompleteSettings.collections)
                         ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                         : ''
                         }`}
                     >
                       <span className="ml-2 reservoir-subtitle dark:text-white">
-                        {recomendation}
+                        {recommendation}
                       </span>
                     </a>
                   </div>
                 ))}
               {results?.responses?.attributes && <h2 className='flex items-center px-5 py-1 font-semibold text-amber-600'>Attributes</h2>}
               {results?.responses?.attributes && results?.responses?.attributes
-                .slice(0, acSettings.attributes)
+                .slice(0, autocompleteSettings.attributes)
                 .map((collection, index) => (
                   <Link
                     key={index}
@@ -480,14 +464,14 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
                     <a
                       {...getItemProps({
                         key: collection.collection_name,
-                        index: index + acSettings.smartSearch + acSettings.collections + acSettings.token,
+                        index: index + autocompleteSettings.smartSearch + autocompleteSettings.collections + autocompleteSettings.token,
                         item: collection.collection_name + collection.key + collection.value,
                       })}
                       onClick={() => {
                         reset()
                         setFocused(false)
                       }}
-                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + acSettings.smartSearch + acSettings.collections + acSettings.token)
+                      className={`flex items-center p-4 hover:bg-[#F3F4F6] dark:hover:bg-neutral-600 ${highlightedIndex === (index + autocompleteSettings.smartSearch + autocompleteSettings.collections + autocompleteSettings.token)
                         ? 'bg-[#F3F4F6] dark:bg-neutral-600'
                         : ''
                         }`}
