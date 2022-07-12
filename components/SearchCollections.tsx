@@ -90,21 +90,21 @@ const SearchCollections: FC<Props> = ({ communityId, initialResults }) => {
     };
 
     fetch('https://api.smartnftsearch.xyz/search/nft-search', options).then((res) => {
+
       res.json().then((data) => {
+        console.log(data)
         if (data.error === 0 && data.request_type === 'attribute_search') {
-          if (data.request_response.attributes.length > 0) {
-            const search_attributes = data.request_response.attributes
-            let url = ""
-            search_attributes.forEach((attr, index) => {
-              if (url.includes(attr.key)) return // limitation from reservoir marketplace, only on filter for attribute
-              if (index == 0)
-                url = `attributes%5B${attr.key}%5D=${attr.value}`
-              else
-                url = url + `&attributes%5B${attr.key}%5D=${attr.value}`
-            })
-            console.log(url)
-            router.push(`/collections/${data.request_response.contract_address}?${url}`)
-          }
+          const search_attributes = data.request_response.attributes
+          let url = ""
+          search_attributes.forEach((attr, index) => {
+            if (url.includes(attr.key)) return // limitation from reservoir marketplace, only on filter for attribute
+            if (index == 0)
+              url = `attributes%5B${attr.key}%5D=${attr.value}`
+            else
+              url = url + `&attributes%5B${attr.key}%5D=${attr.value}`
+          })
+          console.log(url)
+          router.push(`/collections/${data.request_response.contract_address}?${url}`)
         }
         else if (data.error === 0 && data.request_type === 'pfp_search') {
           //`/collections/${collection?.collection_contract}?attributes%5B${collection.key}%5D=${collection.value}`
